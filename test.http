@@ -9,6 +9,14 @@ content-type: application/json
 
 ###
 
+POST http://localhost:8080/create-recording HTTP/1.1
+
+{
+  "title": "Hans",
+  "url": "www.hans.de",
+  "userId": "12"
+}
+
 GET http://localhost:8080/profile/Luben HTTP/1.1
 
 ###
