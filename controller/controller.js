@@ -10,15 +10,18 @@ export const register = async (req, res) => {
 
     connectDB();
     const hashedPW = await bcrypt.hash(password, saltRounds);
-    const token = jwt.sign({ username: username }, privateKey);
 
-    await User.create({
+    const user = await User.create({
       username: username,
       email: email,
       password: hashedPW,
-      token: token,
     });
 
+    console.log(user.username);
+    const token = jwt.sign(JSON.stringify(user), privateKey);
+    user.token = token;
+    console.log(user);
+    await user.save();
     res.status(201).json(token);
   } catch (error) {
     console.error(error);

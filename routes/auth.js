@@ -6,4 +6,4 @@ export default express
   .Router()
   .post("/register", checkDuplicate, register)
   .post("/login", login)
-  .post("logout", logout);
+  .post("/logout", logout);

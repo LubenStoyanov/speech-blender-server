@@ -2,7 +2,7 @@ import express from "express";
 import helmet from "helmet";
 import cors from "cors";
 import validateToken from "./validateToken.js";
-import authRouter from "./routes/routes.js";
+import authRouter from "./routes/auth.js";
 
 export const privateKey = process.env.PRIVATE_KEY;
 const app = express();
