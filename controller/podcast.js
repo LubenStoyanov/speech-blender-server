@@ -1,11 +1,11 @@
-import { decode } from "../decode.js";
-import connectDB, { Podcast, User } from "../models/db.js";
+import connectDB from "../db.js";
+import { Podcast } from "../models/podcast.js";
 
 export const createPodcast = async (req, res) => {
   try {
     connectDB();
-    await Podcast.create(req.body);
-    res.status(201).send("Podcast created");
+    const podcast = await Podcast.create(req.body);
+    res.status(201).json({ publicId: podcast.publicId });
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
@@ -37,13 +37,17 @@ export const getSearchPodcast = async (req, res) => {
   }
 };
 
-export const getUpdatePodcast = async (req, res) => {
+export const getDeletePodcast = async (req, res) => {
+  console.log("delete");
   try {
-    const { token } = req.body;
+    const { publicId } = req.body;
+    console.log(publicId);
     connectDB();
-    const user = await decode(token);
-    const updatePodcast = await Podcast.deleteOne({ title: title, _id: id });
-    res.status(200).json(updatePodcast);
+    await Podcast.deleteOne({
+      publicId: publicId,
+    });
+
+    res.status(200).send("Podcast deleted");
   } catch (error) {
     console.error(error);
     res.sendStatus(500);

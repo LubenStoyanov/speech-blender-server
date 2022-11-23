@@ -1,9 +1,9 @@
 import express from "express";
-import { register, login, logout } from "../controller/controller.js";
-import { checkDuplicate } from "../error.js";
+import { register, login, logout } from "../controller/auth.js";
+import { checkDuplicateUser } from "../error.js";
 
 export default express
   .Router()
-  .post("/register", checkDuplicate, register)
+  .post("/register", checkDuplicateUser, register)
   .post("/login", login)
   .post("/logout", logout);

@@ -1,8 +1,10 @@
 import express from "express";
+// import S3 from "aws-sdk/clients/s3";
 import helmet from "helmet";
 import cors from "cors";
 import validateToken from "./validateToken.js";
 import authRouter from "./routes/auth.js";
+import podcastRouter from "./routes/podcast.js";
 
 export const privateKey = process.env.PRIVATE_KEY;
 const app = express();
@@ -13,6 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/", authRouter);
+app.use("/podcast", podcastRouter);
 
 app.post("/profile/:username", validateToken, (req, res) => {
   console.log("Token is valid.");

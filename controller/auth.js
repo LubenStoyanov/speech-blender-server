@@ -1,7 +1,9 @@
-import connectDB, { User } from "../models/db.js";
+import { User } from "../models/user.js";
+import connectDB from "../db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { privateKey } from "../server.js";
+import db from "../db.js";
 const saltRounds = 10;
 
 export const register = async (req, res) => {
