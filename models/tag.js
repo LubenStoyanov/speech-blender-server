@@ -1,3 +1,5 @@
+import mongoose, { Schema } from "mongoose";
+
 const tagSchema = new Schema({
   tagName: {
     type: String,

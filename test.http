@@ -49,3 +49,54 @@ Content-Type: application/json
 
 ###
 POST http://localhost:8080/upload
+
+###
+POST http://localhost:8080/favorite/create-favorite HTTP/1.1
+Content-Type: application/json
+
+{
+  "userId": "123",
+  "podcastId": "456"
+}
+
+###
+GET http://localhost:8080/favorite/all HTTP/1.1
+
+###
+DELETE  http://localhost:8080/favorite/delete-favorite HTTP/1.1
+Content-Type: application/json
+
+{
+  "publicId": "1361840.9716803215"
+}
+
+###
+POST http://localhost:8080/tag/create-tag HTTP/1.1
+Content-Type: application/json
+
+{
+  "tagName": "WM"
+} 
+
+###
+GET http://localhost:8080/tag/all HTTP/1.1
+
+###
+POST http://localhost:8080/podcast-tag/create-podcast-tag HTTP/1.1
+Content-Type: application/json
+
+{
+  "podcastId": "123",
+  "tagId": "456"
+}
+
+###
+GET http://localhost:8080/podcast-tag/all HTTP/1.1
+
+###
+DELETE  http://localhost:8080/podcast-tag/delete-podcast-tag HTTP/1.1
+Content-Type: application/json
+
+{
+  "publicId": "669485.7359335504"
+}

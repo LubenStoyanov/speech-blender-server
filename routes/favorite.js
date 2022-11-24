@@ -2,11 +2,12 @@ import express from "express";
 import {
     createFavorite,
     getFavorite,
-    deleteFavorite,
+    getDeleteFavorite,
 } from "../controller/favorite.js";
+import { checkExistsFavorite } from "../error.js";
 
 export default express
     .Router()
     .get("/all", getFavorite)
-    .post("/create-recording", createFavorite)
-    .delete("/delete-recording", deleteFavorite);
+    .post("/create-favorite", createFavorite)
+    .delete("/delete-favorite", checkExistsFavorite, getDeleteFavorite);

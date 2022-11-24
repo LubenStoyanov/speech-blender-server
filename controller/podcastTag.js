@@ -1,10 +1,10 @@
 import connectDB from "../db.js";
-import { Favorite } from "../models/favorite.js";
+import { PodcastTag } from "../models/podcastTag.js";
 
-export const createFavorite = async (req, res) => {
+export const createPodcastTag = async (req, res) => {
   try {
     connectDB();
-    const podcast = await Favorite.create(req.body);
+    const podcastTag = await PodcastTag.create(req.body);
     res.sendStatus(201)
   } catch (error) {
     console.error(error);
@@ -12,26 +12,26 @@ export const createFavorite = async (req, res) => {
   }
 };
 
-export const getFavorite = async (req, res) => {
+export const getPodcastTag = async (req, res) => {
   try {
     connectDB();
-    const favorite = await Favorite.find();
-    res.status(200).json(favorite);
+    const podcastTag = await PodcastTag.find();
+    res.status(200).json(podcastTag);
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
   }
 }
 
-export const getDeleteFavorite = async (req, res) => {
+export const getDeletePodcastTag = async (req, res) => {
   try {
     const { publicId } = req.body;
     connectDB();
-    await Favorite.deleteOne({
+    await PodcastTag.deleteOne({
       publicId: publicId,
     });
 
-    res.status(200).send("Podcast deleted");
+    res.status(200).send("Tag deleted");
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
