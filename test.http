@@ -9,7 +9,8 @@ content-type: application/json
 
 ###
 
-POST http://localhost:8080/create-recording HTTP/1.1
+POST http://localhost:8080/recording/create-recording HTTP/1.1
+content-type: application/json
 
 {
   "title": "Hans",
@@ -17,6 +18,7 @@ POST http://localhost:8080/create-recording HTTP/1.1
   "userId": "12"
 }
 
+###
 GET http://localhost:8080/profile/Luben HTTP/1.1
 
 ###
