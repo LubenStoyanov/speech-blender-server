@@ -6,6 +6,7 @@ import {
 export const createRecording = async (req, res) => {
     try {
         connectDB();
+        console.log("recording")
         const recording = await Recording.create(req.body);
         res.status(201).json({
             publicId: recording.publicId
