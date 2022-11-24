@@ -1,17 +1,14 @@
 import jwt from "jsonwebtoken";
+import { User } from "./models/user.js";
 import { privateKey } from "./server.js";
 
-export default (req, res, next) => {
+export default async (req, res, next) => {
   const bearerHeader = req.headers["authorization"];
   const token = bearerHeader.split(" ")[1];
 
-  jwt.verify(token, privateKey, (err, username) => {
-    if (err) {
-      console.log("Invalid token.");
-      res.sendStatus(403);
-    } else {
-      req.username = username;
-      next();
-    }
-  });
+  const decoded = jwt.verify(token, privateKey);
+  const { _id } = decoded;
+  const user = await User.findOne({ _id: _id });
+  if (!user) return res.sendStatus(404);
+  next();
 };

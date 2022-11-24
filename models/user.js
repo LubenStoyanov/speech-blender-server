@@ -9,9 +9,6 @@ const userSchema = new Schema(
     },
     email: { type: String, required: true, unique: 1 },
     password: { type: String, required: true },
-    token: {
-      type: String,
-    },
   },
   { timestamps: true }
 );

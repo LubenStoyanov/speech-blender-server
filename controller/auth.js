@@ -3,7 +3,6 @@ import connectDB from "../db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { privateKey } from "../server.js";
-import db from "../db.js";
 const saltRounds = 10;
 
 export const register = async (req, res) => {
@@ -19,11 +18,7 @@ export const register = async (req, res) => {
       password: hashedPW,
     });
 
-    console.log(user.username);
     const token = jwt.sign(JSON.stringify(user), privateKey);
-    user.token = token;
-    console.log(user);
-    await user.save();
     res.status(201).json(token);
   } catch (error) {
     console.error(error);
@@ -40,7 +35,7 @@ export const login = async (req, res) => {
 
     const loginVerified = await bcrypt.compare(password, user.password);
     if (!loginVerified) return res.status(401).send("Wrong Password");
-    const token = jwt.sign({ username: username }, privateKey);
+    const token = jwt.sign({ _id: user._id }, privateKey);
 
     await User.updateOne({ username: username }, { $set: { token: token } });
     res.status(200).json(token);
