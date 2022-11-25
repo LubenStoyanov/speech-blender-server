@@ -3,21 +3,21 @@ import jwt from "jsonwebtoken";
 import { privateKey } from "./server.js";
 
 export const setCookie = async (req, res, next) => {
-  const token = req.cookies.token;
   // const { username } = req.body;
   // const user = await User.findOne({ username: username }, "password");
+  const token = req.cookies.token;
   const userId = req.userId;
   if (token === undefined) {
     const token = jwt.sign({ _id: userId }, privateKey);
     console.log("Setting cookie");
     return res
       .cookie("token", token, {
-        httpOnly: false,
-        // secure: false,
+        httpOnly: true,
+        secure: false,
       })
       .status(200)
       .json({ message: "Logged in" });
   }
 
-  next();
+  return res.sendStatus(403);
 };
