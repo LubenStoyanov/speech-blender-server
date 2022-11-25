@@ -24,17 +24,31 @@ export const register = async (req, res) => {
   }
 };
 
-export const login = async (req, res, next) => {
+export const login = async (req, res) => {
   try {
     const { username, password } = req.body;
+    // const token = req.cookies.token;
+    // console.log(token);
 
     const user = await User.findOne({ username: username }, "password");
 
     const loginVerified = await bcrypt.compare(password, user.password);
     if (!loginVerified) return res.status(401).send("Wrong Password");
-    req.userId = user._id;
-    return next();
-    // res.sendStatus(200);
+
+    // if (token === undefined) {
+    const token = jwt.sign({ _id: user._id }, privateKey);
+    console.log(token, "Setting cookie");
+    return res
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "strict",
+        maxAge: 900000,
+      })
+      .status(200)
+      .json({ message: "Logged in" });
+    // }
+    // return res.status(200);
   } catch (error) {
     console.error(error);
     return res.sendStatus(500);

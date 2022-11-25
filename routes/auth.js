@@ -6,5 +6,5 @@ import { checkDuplicateUser } from "../error.js";
 export default express
   .Router()
   .post("/register", checkDuplicateUser, register)
-  .post("/login", login, setCookie)
+  .post("/login", login)
   .post("/logout", logout);

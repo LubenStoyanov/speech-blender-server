@@ -4,7 +4,6 @@ import { privateKey } from "./server.js";
 
 export default async (req, res, next) => {
   const token = req.cookies.token;
-  console.log("validate", token);
   if (!token) {
     console.log("No token");
     return res.sendStatus(403);
@@ -12,12 +11,11 @@ export default async (req, res, next) => {
 
   try {
     const data = jwt.verify(token, privateKey);
-    const { _id } = data;
-    await User.findOne({ _id: _id });
-    req.userId = _id;
+    await User.findOne({ _id: data._id });
     return next();
   } catch (error) {
     console.error(error);
     return res.sendStatus(403);
   }
+  next();
 };
