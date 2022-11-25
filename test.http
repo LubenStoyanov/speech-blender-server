@@ -48,6 +48,7 @@ Content-Type: application/json
 }
 
 ###
+
 POST http://localhost:8080/upload
 
 ###
@@ -100,3 +101,4 @@ Content-Type: application/json
 {
   "publicId": "669485.7359335504"
 }
+
