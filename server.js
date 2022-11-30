@@ -19,6 +19,7 @@ import cookieParser from "cookie-parser";
 import connectDB from "./db.js";
 import authorization from "./authorization.js";
 import { Podcast } from "./models/podcast.js";
+import { Recording } from "./models/recording.js";
 
 export const privateKey = process.env.PRIVATE_KEY;
 const app = express();
@@ -45,7 +46,27 @@ app.use("/tag", tagRouter);
 app.use("/podcast-tag", podcastTagRouter);
 app.use("/users", usersRouter);
 
-app.post("/upload", upload.single("file"), async (req, res) => {
+app.post("/uploadClip", upload.single("file"), async (req, res) => {
+  const filename = req.file.originalname;
+  const bucketname = "sound-bits";
+  const file = req.file.buffer;
+  const token = req.cookies.token;
+
+  try {
+    const link = await uploadAudio(filename, bucketname, file); // Use link to connect with user
+    const user = jwt.verify(token, privateKey);
+    await Recording.create({
+      url: link,
+      title: filename,
+      userId: user._id,
+    });
+    res.json(link);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json("error");
+  }
+});
+app.post("/uploadPodcast", upload.single("file"), async (req, res) => {
   const filename = req.file.originalname;
   const bucketname = "sound-bits";
   const file = req.file.buffer;
