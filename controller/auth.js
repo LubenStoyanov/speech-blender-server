@@ -27,10 +27,9 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { username, password } = req.body;
-    // const token = req.cookies.token;
-    // console.log(token);
 
     const user = await User.findOne({ username: username }, "password");
+    if (!user) return res.sendStatus(404);
 
     const loginVerified = await bcrypt.compare(password, user.password);
     if (!loginVerified) return res.status(401).send("Wrong Password");
@@ -47,8 +46,6 @@ export const login = async (req, res) => {
       })
       .status(200)
       .json({ message: "Logged in" });
-    // }
-    // return res.status(200);
   } catch (error) {
     console.error(error);
     return res.sendStatus(500);
@@ -57,9 +54,9 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
   console.log("logout");
+  console.log(req.cookies.token);
   try {
-    res.clearCookie("token");
-    res.sendStatus(200);
+    res.clearCookie("token", { path: "/" }).sendStatus(200);
   } catch (error) {
     console.error(error);
     res.sendStatus(404);

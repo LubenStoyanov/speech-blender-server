@@ -1,4 +1,5 @@
 import express from "express";
+import jwt from "jsonwebtoken";
 import cors from "cors";
 import authRouter from "./routes/auth.js";
 import podcastRouter from "./routes/podcast.js";
@@ -7,6 +8,7 @@ import multer, { memoryStorage } from "multer";
 const storage = memoryStorage();
 const upload = multer({ storage });
 
+import usersRouter from "./routes/users.js";
 import uploadRouter from "./routes/uploadAudio.js";
 import recordingRouter from "./routes/recording.js";
 import favoriteRouter from "./routes/favorite.js";
@@ -16,6 +18,7 @@ import podcastTagRouter from "./routes/podcastTag.js";
 import cookieParser from "cookie-parser";
 import connectDB from "./db.js";
 import authorization from "./authorization.js";
+import { Podcast } from "./models/podcast.js";
 
 export const privateKey = process.env.PRIVATE_KEY;
 const app = express();
@@ -40,14 +43,27 @@ app.use("/recording", recordingRouter);
 app.use("/favorite", favoriteRouter);
 app.use("/tag", tagRouter);
 app.use("/podcast-tag", podcastTagRouter);
+app.use("/users", usersRouter);
 
 app.post("/upload", upload.single("file"), async (req, res) => {
-  const filename = "test2";
+  const filename = req.file.originalname;
   const bucketname = "sound-bits";
   const file = req.file.buffer;
-  // link is the returned object URL from S3
-  const link = await uploadAudio(filename, bucketname, file);
-  res.send(link);
+  const token = req.cookies.token;
+
+  try {
+    const link = await uploadAudio(filename, bucketname, file); // Use link to connect with user
+    const user = jwt.verify(token, privateKey);
+    await Podcast.create({
+      url: link,
+      title: filename,
+      userId: user._id,
+    });
+    res.json(link);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json("error");
+  }
 });
 
 app.post("/profile/:username", authorization, async (req, res) => {

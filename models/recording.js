@@ -1,21 +1,21 @@
-import mongoose, {
-  Schema
-} from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-const recordingSchema = new Schema({
-  title: {
-    type: String,
+const recordingSchema = new Schema(
+  {
+    title: {
+      type: String,
+    },
+    url: {
+      type: String,
+      required: true,
+    },
+    userId: {
+      type: String,
+      required: true,
+    },
   },
-  url: {
-    type: String,
-    required: true,
-  },
-  userId: {
-    type: String,
-    required: true,
-    unique: 1,
-  },
-}, {
-  timestamps: true
-});
+  {
+    timestamps: true,
+  }
+);
 export const Recording = mongoose.model("Recording", recordingSchema);

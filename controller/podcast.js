@@ -15,6 +15,7 @@ export const createPodcast = async (req, res) => {
 export const getPodcastsAll = async (req, res) => {
   try {
     connectDB();
+    // await Podcast.deleteMany({});
     const podcastsAll = await Podcast.find();
     res.status(200).json(podcastsAll);
   } catch (error) {

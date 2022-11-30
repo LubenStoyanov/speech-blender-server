@@ -1,10 +1,15 @@
+import { v4 as uuidv4 } from "uuid";
 import mongoose, { Schema } from "mongoose";
-const podcastSchema = new Schema( //TODO don't send real ID
+const podcastSchema = new Schema(
   {
     publicId: {
       type: String,
       default: "",
       unique: 1,
+    },
+    url: {
+      type: String,
+      required: true,
     },
     title: {
       type: String,
@@ -12,7 +17,6 @@ const podcastSchema = new Schema( //TODO don't send real ID
     },
     userId: {
       type: String,
-      unique: 1,
       required: true,
     },
     description: {
@@ -26,7 +30,7 @@ const podcastSchema = new Schema( //TODO don't send real ID
   { timestamps: true }
 );
 podcastSchema.pre("save", async function (next) {
-  if (this.publicId === "") this.publicId = Math.random() * 10000000;
+  if (this.publicId === "") this.publicId = uuidv4();
   next();
 });
 
