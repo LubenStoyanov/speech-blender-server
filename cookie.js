@@ -1,10 +1,7 @@
 import jwt from "jsonwebtoken";
-// import { User } from "./models/user.js";
 import { privateKey } from "./server.js";
 
 export const setCookie = async (req, res, next) => {
-  // const { username } = req.body;
-  // const user = await User.findOne({ username: username }, "password");
   const token = req.cookies.token;
   const userId = req.userId;
   if (token === undefined) {

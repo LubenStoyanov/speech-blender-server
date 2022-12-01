@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "audioconcat": "^0.1.4",
     "aws-sdk": "^2.1260.0",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.1",

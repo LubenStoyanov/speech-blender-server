@@ -1,5 +1,6 @@
 import express from "express";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 import cors from "cors";
 import authRouter from "./routes/auth.js";
 import podcastRouter from "./routes/podcast.js";
@@ -47,36 +48,18 @@ app.use("/podcast-tag", podcastTagRouter);
 app.use("/users", usersRouter);
 
 app.post("/uploadClip", upload.single("file"), async (req, res) => {
-  const filename = req.file.originalname;
+  const filename = crypto.randomBytes(32).toString("hex");
   const bucketname = "sound-bits";
   const file = req.file.buffer;
   const token = req.cookies.token;
+  const { podcastId } = req.body;
 
   try {
-    const link = await uploadAudio(filename, bucketname, file); // Use link to connect with user
+    const link = await uploadAudio(filename, bucketname, file);
     const user = jwt.verify(token, privateKey);
     await Recording.create({
       url: link,
-      title: filename,
-      userId: user._id,
-    });
-    res.json(link);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json("error");
-  }
-});
-app.post("/uploadPodcast", upload.single("file"), async (req, res) => {
-  const filename = req.file.originalname;
-  const bucketname = "sound-bits";
-  const file = req.file.buffer;
-  const token = req.cookies.token;
-
-  try {
-    const link = await uploadAudio(filename, bucketname, file); // Use link to connect with user
-    const user = jwt.verify(token, privateKey);
-    await Podcast.create({
-      url: link,
+      podcastId: podcastId,
       title: filename,
       userId: user._id,
     });

@@ -1,10 +1,15 @@
 import connectDB from "../db.js";
+import jwt from "jsonwebtoken";
+import { privateKey } from "../server.js";
 import { Podcast } from "../models/podcast.js";
 
 export const createPodcast = async (req, res) => {
+  const token = req.cookies.token;
   try {
-    connectDB();
-    const podcast = await Podcast.create(req.body);
+    const user = jwt.verify(token, privateKey);
+    console.log({ ...req.body, userId: user._id });
+    console.log(req.body);
+    const podcast = await Podcast.create({ ...req.body, userId: user._id });
     res.status(201).json({ publicId: podcast.publicId });
   } catch (error) {
     console.error(error);
@@ -14,7 +19,6 @@ export const createPodcast = async (req, res) => {
 
 export const getPodcastsAll = async (req, res) => {
   try {
-    connectDB();
     // await Podcast.deleteMany({});
     const podcastsAll = await Podcast.find();
     res.status(200).json(podcastsAll);
@@ -27,7 +31,6 @@ export const getPodcastsAll = async (req, res) => {
 export const getSearchPodcast = async (req, res) => {
   try {
     const { query } = req.params;
-    connectDB();
     const searchPodcast = await Podcast.find({
       title: { $regex: "^" + query },
     });
@@ -43,7 +46,6 @@ export const getDeletePodcast = async (req, res) => {
   try {
     const { publicId } = req.body;
     console.log(publicId);
-    connectDB();
     await Podcast.deleteOne({
       publicId: publicId,
     });

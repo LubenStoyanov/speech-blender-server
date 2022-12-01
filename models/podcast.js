@@ -7,10 +7,6 @@ const podcastSchema = new Schema(
       default: "",
       unique: 1,
     },
-    url: {
-      type: String,
-      required: true,
-    },
     title: {
       type: String,
       required: true,

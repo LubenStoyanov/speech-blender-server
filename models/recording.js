@@ -2,14 +2,11 @@ import mongoose, { Schema } from "mongoose";
 
 const recordingSchema = new Schema(
   {
-    title: {
-      type: String,
-    },
     url: {
       type: String,
       required: true,
     },
-    userId: {
+    podcastId: {
       type: String,
       required: true,
     },
