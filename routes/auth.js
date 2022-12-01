@@ -4,6 +4,7 @@ import { checkDuplicateUser } from "../error.js";
 
 export default express
   .Router()
+  .get("/", (req, res) => res.send("Hello"))
   .post("/register", checkDuplicateUser, register)
   .post("/login", login)
   .post("/logout", logout);
