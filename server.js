@@ -32,8 +32,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
   cors({
-    origin: "http://localhost:5173",
-    // origin: "https://deploy-preview-3--cerulean-narwhal-b407c7.netlify.app",
+    // origin: "http://localhost:5173",
+    origin: "https://deploy-preview-3--cerulean-narwhal-b407c7.netlify.app",
     credentials: true,
   })
 );
