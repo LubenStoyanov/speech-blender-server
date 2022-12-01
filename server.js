@@ -29,7 +29,8 @@ connectDB();
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    // origin: "http://localhost:5173",
+    origin: "https://deploy-preview-3--cerulean-narwhal-b407c7.netlify.app",
     credentials: true,
   })
 );
