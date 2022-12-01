@@ -37,15 +37,16 @@ export const login = async (req, res) => {
     // if (token === undefined) {
     const token = jwt.sign({ _id: user._id }, privateKey);
     console.log(token, "Setting cookie");
-    return res
-      .cookie("token", token, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
-        maxAge: 900000,
-      })
-      .status(200)
-      .json({ message: "Logged in" });
+    // return res
+    //   .cookie("token", token, {
+    //     httpOnly: true,
+    //     secure: true,
+    //     sameSite: "none",
+    //     maxAge: 900000,
+    //   })
+    //   .status(200)
+    //   .json({ message: "Logged in" });
+    return res.json(token);
   } catch (error) {
     console.error(error);
     return res.sendStatus(500);
