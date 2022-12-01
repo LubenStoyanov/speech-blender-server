@@ -21,6 +21,7 @@ export const getPodcastsAll = async (req, res) => {
   try {
     // await Podcast.deleteMany({});
     const podcastsAll = await Podcast.find();
+    console.log("podcasts", podcastsAll);
     res.status(200).json(podcastsAll);
   } catch (error) {
     console.error(error);

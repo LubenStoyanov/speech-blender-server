@@ -34,19 +34,17 @@ export const login = async (req, res) => {
     const loginVerified = await bcrypt.compare(password, user.password);
     if (!loginVerified) return res.status(401).send("Wrong Password");
 
-    // if (token === undefined) {
     const token = jwt.sign({ _id: user._id }, privateKey);
     console.log(token, "Setting cookie");
-    // return res
-    //   .cookie("token", token, {
-    //     httpOnly: true,
-    //     secure: true,
-    //     sameSite: "none",
-    //     maxAge: 900000,
-    //   })
-    //   .status(200)
-    //   .json({ message: "Logged in" });
-    return res.json(token);
+    return res
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: false,
+        // sameSite: "strict",
+        maxAge: 900000,
+      })
+      .status(200)
+      .json({ message: "Logged in" });
   } catch (error) {
     console.error(error);
     return res.sendStatus(500);

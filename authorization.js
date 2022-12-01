@@ -3,9 +3,9 @@ import { User } from "./models/user.js";
 import { privateKey } from "./server.js";
 
 export default async (req, res, next) => {
-  // const token = req.cookies.token;
-  const { token } = req.body;
-  console.log(token);
+  const token = req.cookies.token;
+  // const { token } = req.body;
+  // console.log(token);
   if (!token) {
     console.log("No token");
     return res.sendStatus(403);

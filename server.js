@@ -27,17 +27,16 @@ const app = express();
 const port = process.env.PORT || 8080;
 connectDB();
 
-app.use(
-  cors({
-    // origin: "http://localhost:5173",
-    origin: "https://deploy-preview-3--cerulean-narwhal-b407c7.netlify.app",
-    credentials: true,
-  })
-);
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    // origin: "https://deploy-preview-3--cerulean-narwhal-b407c7.netlify.app",
+    credentials: true,
+  })
+);
 app.use("/", authRouter);
 app.use("/podcast", podcastRouter);
 // app.use("/upload", uploadRouter);

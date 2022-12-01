@@ -17,7 +17,7 @@ export const createRecording = async (req, res) => {
 export const getRecordingsAll = async (req, res) => {
   try {
     const { podcastId } = req.params;
-    console.log(podcastId);
+    // await Recording.deleteMany({});
     const recordingsAll = await Recording.find({ podcastId: podcastId });
     console.log(recordingsAll);
     res.status(200).json(recordingsAll);
