@@ -4,7 +4,7 @@ import { privateKey } from "./server.js";
 
 export default async (req, res, next) => {
   const token = req.cookies.token;
-  console.log("req", req);
+  // console.log("req", req);
   console.log("req.cookies", req.cookies);
   // const { token } = req.body;
   // console.log(token);
@@ -21,5 +21,4 @@ export default async (req, res, next) => {
     console.error(error);
     return res.sendStatus(403);
   }
-  next();
 };
