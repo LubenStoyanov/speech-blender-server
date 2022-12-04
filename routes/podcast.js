@@ -11,5 +11,5 @@ export default express
   .Router()
   .get("/all", getPodcastsAll)
   .post("/create-podcast", createPodcast)
-  .delete("/delete", checkExistsPodcast, getDeletePodcast)
+  .delete("/delete/:podcastId", checkExistsPodcast, getDeletePodcast)
   .get("/search/:query", getSearchPodcast);

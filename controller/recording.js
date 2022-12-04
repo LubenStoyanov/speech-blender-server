@@ -19,7 +19,7 @@ export const getRecordingsAll = async (req, res) => {
     const { podcastId } = req.params;
     // await Recording.deleteMany({});
     const recordingsAll = await Recording.find({ podcastId: podcastId });
-    console.log(recordingsAll);
+    console.log("recordingsAll", recordingsAll);
     res.status(200).json(recordingsAll);
   } catch (error) {
     console.error(error);

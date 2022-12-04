@@ -6,7 +6,6 @@ import { PodcastTag } from "./models/podcastTag.js";
 
 export const checkDuplicateUser = async (req, res, next) => {
   const { username, email } = req.body;
-  connectDB();
   const emailExists = await User.findOne({ email: email });
   if (emailExists)
     return res.status(409).json({
@@ -23,11 +22,13 @@ export const checkDuplicateUser = async (req, res, next) => {
 };
 
 export const checkExistsPodcast = async (req, res, next) => {
-  const { publicId } = req.body;
-  connectDB();
+  console.log("checkexistpod");
+  const { podcastId } = req.params;
   const podcastExists = await Podcast.findOne({
-    publicId: publicId,
+    _id: podcastId,
   });
+  console.log("podcastId", podcastId);
+  console.log("podcastexists", podcastExists);
   if (!podcastExists)
     return res.status(404).json({
       error: "No entry found",
@@ -37,8 +38,7 @@ export const checkExistsPodcast = async (req, res, next) => {
 };
 
 export const checkExistsFavorite = async (req, res, next) => {
-const { publicId } = req.body;
-  connectDB();
+  const { publicId } = req.body;
   const favoriteExists = await Favorite.findOne({
     publicId: publicId,
   });
@@ -51,8 +51,7 @@ const { publicId } = req.body;
 };
 
 export const checkExistsPodcastTag = async (req, res, next) => {
-const { publicId } = req.body;
-  connectDB();
+  const { publicId } = req.body;
   const podcastTagExists = await PodcastTag.findOne({
     publicId: publicId,
   });

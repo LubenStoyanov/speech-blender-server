@@ -1,6 +1,6 @@
 import AWS from "aws-sdk";
 
-const s3 = new AWS.S3({
+export const s3 = new AWS.S3({
   apiVersion: "2006-03-01",
   accessKeyId: process.env.ACCESS_KEY,
   secretAccessKey: process.env.SECRET_ACCESS_KEY,
