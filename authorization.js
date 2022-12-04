@@ -19,5 +19,4 @@ export default async (req, res, next) => {
     console.error(error);
     return res.sendStatus(403);
   }
-  next();
 };

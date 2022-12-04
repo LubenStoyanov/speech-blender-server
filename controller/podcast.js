@@ -1,16 +1,19 @@
-import connectDB from "../db.js";
 import jwt from "jsonwebtoken";
 import { privateKey } from "../server.js";
 import { Podcast } from "../models/podcast.js";
 import { Recording } from "../models/recording.js";
 import { s3 } from "../aws.js";
+import { Collaborater } from "../models/collaborater.js";
+import mongoose from "mongoose";
 
 export const createPodcast = async (req, res) => {
   const token = req.cookies.token;
+  const user = jwt.verify(token, privateKey);
+  console.log("token", token);
   console.log("createP", req.body);
   try {
-    const user = jwt.verify(token, privateKey);
     const podcast = await Podcast.create({ ...req.body, userId: user._id });
+    await Collaborater.create({ userId: user._id, podcastId: podcast._id });
     res.status(201).json({ podcastId: podcast._id });
   } catch (error) {
     console.error(error);
@@ -18,6 +21,25 @@ export const createPodcast = async (req, res) => {
   }
 };
 
+export const getUserPodcasts = async (req, res) => {
+  const token = req.cookies.token;
+  const user = jwt.verify(token, privateKey);
+  try {
+    // await Podcast.deleteMany({});
+    console.log("user", user);
+    const podcastsCollab = await Collaborater.find({ userId: user._id });
+    const podcastIds = podcastsCollab.map((c) =>
+      mongoose.Types.ObjectId(c.podcastId)
+    );
+    console.log("podcastIds", podcastIds);
+    const podcasts = await Podcast.find({ _id: { $in: podcastIds } });
+    console.log("user", podcasts);
+    res.status(200).json(podcasts);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+};
 export const getPodcastsAll = async (req, res) => {
   try {
     // await Podcast.deleteMany({});

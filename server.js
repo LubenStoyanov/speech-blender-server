@@ -15,6 +15,7 @@ import recordingRouter from "./routes/recording.js";
 import favoriteRouter from "./routes/favorite.js";
 import tagRouter from "./routes/tag.js";
 import podcastTagRouter from "./routes/podcastTag.js";
+import collaboraterRouter from "./routes/collaborater.js";
 
 import cookieParser from "cookie-parser";
 import connectDB from "./db.js";
@@ -45,6 +46,7 @@ app.use("/favorite", favoriteRouter);
 app.use("/tag", tagRouter);
 app.use("/podcast-tag", podcastTagRouter);
 app.use("/users", usersRouter);
+app.use("/collaborater", collaboraterRouter);
 
 app.post("/uploadClip", upload.single("file"), async (req, res) => {
   const filename = crypto.randomBytes(32).toString("hex");
