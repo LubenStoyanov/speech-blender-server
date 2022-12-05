@@ -16,6 +16,7 @@ import favoriteRouter from "./routes/favorite.js";
 import tagRouter from "./routes/tag.js";
 import podcastTagRouter from "./routes/podcastTag.js";
 import collaboraterRouter from "./routes/collaborater.js";
+import avatarImageRouter from "./routes/avatar.js";
 
 import cookieParser from "cookie-parser";
 import connectDB from "./db.js";
@@ -47,6 +48,18 @@ app.use("/tag", tagRouter);
 app.use("/podcast-tag", podcastTagRouter);
 app.use("/users", usersRouter);
 app.use("/collaborater", collaboraterRouter);
+app.use("/avatar-image", avatarImageRouter);
+
+app.get("/homeFeed", async (req, res) => {
+  try {
+    const homeFeed = await Podcast.aggregate([{ $sample: { size: 3 } }]);
+    console.log(homeFeed);
+    res.status(200).json(homeFeed);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+});
 
 app.post("/uploadClip", upload.single("file"), async (req, res) => {
   const filename = crypto.randomBytes(32).toString("hex");
@@ -70,7 +83,28 @@ app.post("/uploadClip", upload.single("file"), async (req, res) => {
     res.status(500).json("error");
   }
 });
+app.post("/uploadAvatar", upload.single("file"), async (req, res) => {
+  const filename = crypto.randomBytes(32).toString("hex");
+  const bucketname = "sound-bits";
+  const file = req.file.buffer;
+  // const token = req.cookies.token;
+  // const { podcastId } = req.body;
 
+  try {
+    const link = await uploadAvatar(filename, bucketname, file);
+    // const user = jwt.verify(token, privateKey);
+    // await Recording.create({
+    //   url: link,
+    //   podcastId: podcastId,
+    //   title: filename,
+    //   userId: user._id,
+    // });
+    res.json(link);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json("error");
+  }
+});
 app.post("/profile/:username", authorization, async (req, res) => {
   console.log("Token is valid.");
   res.sendStatus(200);

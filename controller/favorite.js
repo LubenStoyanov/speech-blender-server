@@ -59,3 +59,17 @@ export const getDeleteFavorite = async (req, res) => {
     res.sendStatus(500);
   }
 };
+
+export const unlikeFavorite = async (req, res) => {
+  console.log("unlike");
+  const { podcastId } = req.body;
+  const token = req.cookies.token;
+  const user = jwt.verify(token, privateKey);
+  try {
+    await Favorite.deleteOne({ userId: user._id, podcastId: podcastId });
+    res.sendStatus(200);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+};

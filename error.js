@@ -1,8 +1,9 @@
-import connectDB from "./db.js";
 import { User } from "./models/user.js";
 import { Podcast } from "./models/podcast.js";
 import { Favorite } from "./models/favorite.js";
 import { PodcastTag } from "./models/podcastTag.js";
+import { privateKey } from "./server.js";
+import jwt from "jsonwebtoken";
 
 export const checkDuplicateUser = async (req, res, next) => {
   const { username, email } = req.body;
@@ -38,9 +39,12 @@ export const checkExistsPodcast = async (req, res, next) => {
 };
 
 export const checkExistsFavorite = async (req, res, next) => {
-  const { publicId } = req.body;
+  const { podcastId } = req.body;
+  const token = req.cookies.token;
+  const user = jwt.verify(token, privateKey);
   const favoriteExists = await Favorite.findOne({
-    publicId: publicId,
+    podcastId: podcastId,
+    userId: user._id,
   });
   if (!favoriteExists)
     return res.status(404).json({
