@@ -13,7 +13,6 @@ const favoriteSchema = new Schema({
   podcastId: {
     type: String,
     required: true,
-    unique: 1,
   },
 });
 
