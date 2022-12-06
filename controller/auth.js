@@ -35,16 +35,14 @@ export const login = async (req, res) => {
     if (!loginVerified) return res.status(401).send("Wrong Password");
 
     const token = jwt.sign({ _id: user._id }, privateKey);
-    console.log(token, "Setting cookie");
-    return res
-      .cookie("token", token, {
-        httpOnly: true,
-        secure: true,
-        // sameSite: "strict",
-        // maxAge: 900000,
-      })
-      .status(200)
-      .json({ message: "Logged in" });
+
+    console.log("Setting cookie", token);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    });
+    res.status(200).json({ message: "Logged in" });
   } catch (error) {
     console.error(error);
     return res.sendStatus(500);
