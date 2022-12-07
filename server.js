@@ -70,7 +70,7 @@ app.use("/avatar-image", avatarImageRouter);
 app.get("/homeFeed", async (req, res) => {
   try {
     const homeFeed = await Podcast.aggregate([{ $sample: { size: 3 } }]);
-    console.log(homeFeed);
+    console.log(">>>>", homeFeed);
     res.status(200).json(homeFeed);
   } catch (error) {
     console.error(error);
