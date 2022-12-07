@@ -29,14 +29,6 @@ const app = express();
 const port = process.env.PORT || 8080;
 connectDB();
 
-app.use((req, res, next) => {
-  if (token) {
-    return next();
-  } else {
-    return res.status(500).send("No token");
-  }
-});
-
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -47,6 +39,15 @@ app.use(
     credentials: true,
   })
 );
+
+app.use((req, res, next) => {
+  const token = req.cookies.token;
+  if (token) {
+    return next();
+  } else {
+    return res.status(500).send("No token");
+  }
+});
 app.use("/", authRouter);
 app.use("/podcast", podcastRouter);
 // app.use("/upload", uploadRouter);
