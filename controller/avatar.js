@@ -49,6 +49,6 @@ export const getAvatar = async (req, res) => {
       res.sendStatus(500);
     }
   } else {
-    res.sendStatus(500);
+    res.status(500).send("No token");
   }
 };
