@@ -39,12 +39,16 @@ export const avatarController = async (req, res) => {
 
 export const getAvatar = async (req, res) => {
   const token = req.cookies.token;
-  const user = jwt.verify(token, privateKey);
-  try {
-    const url = await Avatar.findOne({ userId: user._id });
-    res.status(200).json(url);
-  } catch (error) {
-    console.error(error);
+  if (token) {
+    try {
+      const user = jwt.verify(token, privateKey);
+      const url = await Avatar.findOne({ userId: user._id });
+      res.status(200).json(url);
+    } catch (error) {
+      console.error(error);
+      res.sendStatus(500);
+    }
+  } else {
     res.sendStatus(500);
   }
 };
