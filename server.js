@@ -43,6 +43,7 @@ app.use(
 app.use((req, res, next) => {
   const token = req.cookies.token;
   if (token) {
+    const user = jwt.verify(token, privateKey);
     return next();
   } else {
     return res.status(200).send("No token");
