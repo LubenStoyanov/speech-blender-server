@@ -38,7 +38,7 @@ export const login = async (req, res) => {
 
     console.log("Setting cookie", token);
     res.cookie("token", token, {
-      httpOnly: false,
+      httpOnly: true,
       secure: true,
       sameSite: "none",
     });
