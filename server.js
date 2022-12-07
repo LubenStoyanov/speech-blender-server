@@ -40,19 +40,22 @@ app.use(
   })
 );
 
-// app.use((req, res, next) => {
-//   const token = req.cookies.token;
-//   switch(user) {
-//     case "user1":
+app.use((req, res, next) => {
+  const token = req.cookies.token;
+  const user = jwt.verify(token, privateKey);
+  console.log(user);
+  next();
+  // switch(user) {
+  //   case "user1":
 
-//   }
-//   if (token) {
-//     const user = jwt.verify(token, privateKey);
-//     return next();
-//   } else {
-//     return res.status(200).send("No token");
-//   }
-// });
+  // }
+  // if (token) {
+  //   const user = jwt.verify(token, privateKey);
+  //   return next();
+  // } else {
+  //   return res.status(200).send("No token");
+  // }
+});
 app.use("/", authRouter);
 app.use("/podcast", podcastRouter);
 // app.use("/upload", uploadRouter);
