@@ -43,7 +43,7 @@ app.use(
 app.use((req, res, next) => {
   const token = req.cookies.token;
   const user = jwt.verify(token, privateKey);
-  console.log(user);
+  console.log("middleware user", user);
   next();
   // switch(user) {
   //   case "user1":
