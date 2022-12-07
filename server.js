@@ -29,6 +29,14 @@ const app = express();
 const port = process.env.PORT || 8080;
 connectDB();
 
+app.use((req, res, next) => {
+  if (token) {
+    return next();
+  } else {
+    return res.status(500).send("No token");
+  }
+});
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
