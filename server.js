@@ -45,7 +45,7 @@ app.use((req, res, next) => {
   if (token) {
     return next();
   } else {
-    return res.status(500).send("No token");
+    return res.status(200).send("No token");
   }
 });
 app.use("/", authRouter);
