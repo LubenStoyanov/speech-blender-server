@@ -24,7 +24,7 @@ import authorization from "./authorization.js";
 import { Podcast } from "./models/podcast.js";
 import { Recording } from "./models/recording.js";
 
-const { PRODUCTION_URL, LOCAL_URL } = process.env;
+const { PRODUCTION_URL, DEVELOPMENT_URL } = process.env;
 const NODE_ENVIROMENT = process.env.NODE_ENV;
 
 export const privateKey = process.env.PRIVATE_KEY;
