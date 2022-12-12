@@ -24,6 +24,9 @@ import authorization from "./authorization.js";
 import { Podcast } from "./models/podcast.js";
 import { Recording } from "./models/recording.js";
 
+const { PRODUCTION_URL, LOCAL_URL } = process.env;
+const NODE_ENVIROMENT = process.env.NODE_ENV;
+
 export const privateKey = process.env.PRIVATE_KEY;
 const app = express();
 const port = process.env.PORT || 8080;
@@ -34,8 +37,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
   cors({
-    // origin: "http://localhost:5173",
-    origin: "https://cerulean-narwhal-b407c7.netlify.app",
+    origin: NODE_ENVIROMENT === "production" ? PRODUCTION_URL : DEVELOPMENT_URL,
     credentials: true,
   })
 );
@@ -47,16 +49,6 @@ app.use((req, res, next) => {
     console.log("middleware user", user);
   }
   next();
-  // switch(user) {
-  //   case "user1":
-
-  // }
-  // if (token) {
-  //   const user = jwt.verify(token, privateKey);
-  //   return next();
-  // } else {
-  //   return res.status(200).send("No token");
-  // }
 });
 app.use("/", authRouter);
 app.use("/podcast", podcastRouter);
